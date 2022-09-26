@@ -1,9 +1,16 @@
 import Book from './Book';
 import { useBookDetail } from '../../hooks/useBookDetail';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getBookById } from '../../services/books';
 
 function BookDetail() {
-  const id = 1; // TODO: Use id from route
-  const { book, loading, error } = useBookDetail(id);
+  const { id } = useParams();
+  const { book, setBook, loading, error } = useBookDetail(id);
+
+  useEffect(() => {
+    getBookById(id).then(({ data }) => setBook(data));
+  }, [id, setBook]);
 
   if (error)
     return (
